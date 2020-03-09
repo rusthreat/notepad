@@ -8,13 +8,15 @@ namespace notepad
 {
     class Program
     {
+        static string str;
+
         static void Main(string[] args)
         {
             /// Разработать ежедневник.
             /// В ежедневнике реализовать возможность 
             /// - создания
             /// - удаления
-            /// - реактирования 
+            /// - редактирования 
             /// записей
             /// 
             /// В отдельной записи должно быть не менее пяти полей
@@ -34,11 +36,75 @@ namespace notepad
             //      5) Важность - Низкая, Обычная, Высокая
             // 2. Структура обработки файлов
             // 3. Структура обработки записей
-            // 4. 
+            // 4.
 
+            // Обработка начального меню
+            while (true)
+            {
+                // по умолчанию открывается файл - база данных
+                string path = @"db.csv";
+                Journal jour = new Journal(path);
 
+                Console.Clear();
+                Console.WriteLine("Меню ежедневника (выберите 1-8):");
+                Console.WriteLine("1 - Создать новую запись");
+                Console.WriteLine("2 - Удалить запись");
+                Console.WriteLine("3 - Редактировать запись");
+                Console.WriteLine("\n4 - Открыть журнал записей");
+                Console.WriteLine("5 - Сортировать журнал");
+                Console.WriteLine("6 - Импорт записей из файла");
+                Console.WriteLine("7 - Импорт записей из файла по диапозону дат");
+                Console.WriteLine("\n8 - выход");
 
+                //string item = Console.ReadLine();
 
+                if (!Int32.TryParse(Console.ReadLine(), out int item))
+                {
+                    continue;
+                }
+
+                bool exit = false;
+
+                Console.Clear();
+
+                switch (item)
+                {
+                    case 1:
+                        {
+                            jour.Add();
+                            break;
+                        }
+                    case 2: OpenJournal(); break;
+                    case 3: exit = true; break;
+                    case 4: AddNote(); break;
+                    case 5: OpenJournal(); break;
+                    case 6: exit = true; break;
+                    case 7: AddNote(); break;
+                    case 8: OpenJournal(); break;
+                    default:
+                        {
+                            continue;
+                        }
+                }
+
+                if (exit == true)
+                {
+                    break;
+                }
+
+                Console.WriteLine("\n\nВернуться в главное меню? y/n");
+                str = Console.ReadLine();
+
+                if (str == "y")
+                {
+                    continue;
+                }
+                else
+                {
+                    break;
+                }
+
+            }
         }
-    }
+    }    
 }

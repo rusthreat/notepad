@@ -18,7 +18,7 @@ namespace notepad
         /// <param name="Text">Текст</param>
         /// <param name="Owner">Владелец</param>
         /// <param name="Importance">Важность</param>
-        public Note(DateTime Date, int Number, string Text, string Owner, string Importance)
+        public Note(string Date, int Number, string Text, string Owner, string Importance)
         {
             this.date = Date;
             this.number = Number;
@@ -31,10 +31,21 @@ namespace notepad
 
         #region Методы
 
-        //public string Print()
-        //{
-        //    return $"{this.firstName,15} {this.lastName,15} {this.department,15} {this.position,15} {this.salary,10}";
-        //}
+        public string Print()
+        {
+            return $"{this.date,15} {this.number,15} {this.text,15} {this.owner,15} {this.importance,10}";
+        }
+
+        public string AddNote()
+        {
+            
+            
+            
+            
+            
+            return $"{this.date,15} {this.number,15} {this.text,15} {this.owner,15} {this.importance,10}";
+        }
+
 
         #endregion
 
@@ -48,7 +59,7 @@ namespace notepad
         /// <summary>
         /// Номер
         /// </summary>
-        public string Number { get { return this.number; } set { this.number = value; } }
+        public uint Number { get { return this.number; } set { this.number = value; } }
 
         /// <summary>
         /// Текст
@@ -63,20 +74,7 @@ namespace notepad
         /// <summary>
         /// Важность
         /// </summary>
-        public uint Importance { get { return this.importance; } set { this.Importance = value; } }
-
-        /// <summary>
-        /// Почасовая оплата
-        /// </summary>
-        //public double HourRate
-        //{
-        //    get
-        //    {
-        //        byte workingDays = 25; // Рабочих дней в месяце
-        //        byte workingHours = 8; // Рабочих часов в день
-        //        return ((double)Salary) / workingDays / workingHours;
-        //    }
-        //}
+        public string Importance { get { return this.importance; } set { this.importance = value; } }
 
         #endregion
 
@@ -85,12 +83,12 @@ namespace notepad
         /// <summary>
         /// Поле "Дата"
         /// </summary>
-        private DateTime date = new DateTime();
+        private string date;
 
         /// <summary>
         /// Поле "Номер"
         /// </summary>
-        private int number;
+        private uint number;
 
         /// <summary>
         /// Поле "Текст"
