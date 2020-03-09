@@ -74,13 +74,13 @@ namespace notepad
                             jour.Add();
                             break;
                         }
-                    case 2: OpenJournal(); break;
-                    case 3: exit = true; break;
-                    case 4: AddNote(); break;
-                    case 5: OpenJournal(); break;
-                    case 6: exit = true; break;
-                    case 7: AddNote(); break;
-                    case 8: OpenJournal(); break;
+                    //case 2: OpenJournal(); break;
+                    //case 3: exit = true; break;
+                    //case 4: AddNote(); break;
+                    //case 5: OpenJournal(); break;
+                    //case 6: exit = true; break;
+                    //case 7: AddNote(); break;
+                    //case 8: OpenJournal(); break;
                     default:
                         {
                             continue;

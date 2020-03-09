@@ -52,18 +52,24 @@ namespace notepad
         /// <param name="ConcreteNote">Запись</param>
         public void Add()
         {
-            Console.WriteLine("1. Введите дату/время");
-
-            Console.WriteLine("2. Введите дату/время");
-
-            Console.WriteLine("3. Введите дату/время");
-
-            Console.WriteLine("4. Введите дату/время");
-
-            Console.WriteLine("5. Введите дату/время");
-
+            // Увеличиваем размер хранилища, если он недостаточен
             this.Resize(index >= this.notes.Length);
-            this.notes[index] = ConcreteNote;
+            // номер присваивается автоматически
+            
+            Console.WriteLine($"Номер записи: {index + 1}");
+
+            Console.WriteLine("Введите дату/время:");
+            this.notes[index].Date.set = Console.ReadLine();
+
+            Console.WriteLine("Введите текст:");
+            this.notes[index].text = Console.ReadLine();
+
+            Console.WriteLine("Введите владельца:");
+            this.notes[index].owner = Console.ReadLine();
+
+            Console.WriteLine("Введите важность:");
+            this.importance = Console.ReadLine();
+            this.notes[index] = Note.AddNote((uint)index);
             this.index++;
         }
 
@@ -81,7 +87,7 @@ namespace notepad
                 {
                     string[] args = sr.ReadLine().Split(',');
 
-                    Add(new Note(args[0], Convert.ToUInt32(args[1]), args[2], args[3], args[4]));
+                    //Add(new Note(Convert.ToUInt32(args[0]), args[1], args[2], args[3], args[4]));
                 }
             }
         }
