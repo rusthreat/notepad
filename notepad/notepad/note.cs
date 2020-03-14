@@ -18,7 +18,7 @@ namespace notepad
         /// <param name="Text">Текст</param>
         /// <param name="Owner">Владелец</param>
         /// <param name="Importance">Важность</param>
-        public Note(uint Number, string Date, string Text, string Owner, string Importance)
+        public Note(int Number, string Date, string Text, string Owner, string Importance)
         {
             this.number = Number;
             this.date = Date;
@@ -33,13 +33,16 @@ namespace notepad
 
         public string Print()
         {
-            return $"{this.number,15} {this.date,15} {this.text,15} {this.owner,15} {this.importance,10}";
+            return $"{this.number,5} {this.date,19} {this.text,15} {this.owner,10} {this.importance,10}";
         }
 
-        //public string AddNote(uint i)
+        //static Note AddNote(int i)
         //{
-
-        //    return $"{this.number,15} {this.date,15} {this.text,15} {this.owner,15} {this.importance,10}";
+            
+            
+            
+            
+        //    return new Note{this.number,5} {this.date,19} {this.text,15} {this.owner,10} {this.importance,10};
         //}
 
 
@@ -50,7 +53,7 @@ namespace notepad
         /// <summary>
         /// Номер
         /// </summary>
-        public uint Number { get { return this.number; } set { this.number = value; } }
+        public int Number { get { return this.number; } set { this.number = value; } }
         
         /// <summary>
         /// Дата
@@ -79,7 +82,7 @@ namespace notepad
         /// <summary>
         /// Поле "Номер"
         /// </summary>
-        private uint number;
+        private int number;
         
         /// <summary>
         /// Поле "Дата"

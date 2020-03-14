@@ -37,16 +37,16 @@ namespace notepad
             // 2. Структура обработки файлов
             // 3. Структура обработки записей
             // 4.
+             
+            // по умолчанию открывается файл - база данных
+            string path = @"db.csv";
+            Journal jour = new Journal(path);
 
             // Обработка начального меню
             while (true)
             {
-                // по умолчанию открывается файл - база данных
-                string path = "C:/db.csv";
-                Journal jour = new Journal(path);
-
                 Console.Clear();
-                Console.WriteLine("Меню ежедневника (выберите 1-8):");
+                Console.WriteLine("\nМеню ежедневника (выберите 1-8):");
                 Console.WriteLine("1 - Создать новую запись");
                 Console.WriteLine("2 - Удалить запись");
                 Console.WriteLine("3 - Редактировать запись");
@@ -81,10 +81,18 @@ namespace notepad
                             jour.PrintDbToConsole(); 
                             break;
                         }
-                    //case 5: OpenJournal(); break;
-                    //case 6: exit = true; break;
+                    //case 5: OpenJournal();
+                    //    {
+                    //        jour.PrintDbToConsole()    
+                    //        break;
+                    //    }
+                    //case 6: break;
                     //case 7: AddNote(); break;
-                    case 8: break;
+                    case 8:
+                        {
+                            exit = true;
+                            break;
+                        }
                     default:
                         {
                             continue;
@@ -107,7 +115,6 @@ namespace notepad
                 {
                     break;
                 }
-
             }
         }
     }    

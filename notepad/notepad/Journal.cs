@@ -12,7 +12,9 @@ namespace notepad
     /// </summary>
     struct Journal
     {
-        private Note[] notes; // Основной массив для хранения данных
+        //private Note[] notes; // Основной массив для хранения данных
+
+        private List<Note> notes;
 
         private string path; // путь к файлу с данными
 
@@ -21,15 +23,15 @@ namespace notepad
         string[] titles; // массив, хранящий заголовки полей. используется в PrintDbToConsole
 
         /// <summary>
-        /// Констрктор
+        /// Конструктор
         /// </summary>
         /// <param name="Path">Путь в файлу с данными</param>
         public Journal(string Path)
         {
             this.path = Path; // Сохранение пути к файлу с данными
             this.index = 0; // текущая позиция для добавления записи в notes
-            this.titles = new string[0]; // инициализация массива заголовков   
-            this.notes = new Note[1]; // инициализация массива записей.    | изначально предпологаем, что данных нет
+            this.titles = new string[5] { "Номер", "Дата", "Текст", "Владелец", "Важность" }; // инициализация массива заголовков   
+            this.notes = new List<Note>(); // инициализация списка записей.    | изначально предпологаем, что данных нет
 
             this.Load(); // Загрузка данных
         }
@@ -38,13 +40,13 @@ namespace notepad
         /// Метод увеличения текущего хранилища
         /// </summary>
         /// <param name="Flag">Условие увеличения</param>
-        private void Resize(bool Flag)
-        {
-            if (Flag)
-            {
-                Array.Resize(ref this.notes, this.notes.Length * 2);
-            }
-        }
+        //private void Resize(bool Flag)
+        //{
+        //    if (Flag)
+        //    {
+        //        Array.Resize(ref this.notes, this.notes.Length * 2);
+        //    }
+        //}
 
         /// <summary>
         /// Метод добавления записи в хранилище
@@ -52,27 +54,23 @@ namespace notepad
         /// <param name="ConcreteNote">Запись</param>
         public void Add()
         {
-            // Увеличиваем размер хранилища, если он недостаточен
-            this.Resize(index >= this.notes.Length);
-            this.index++;
-            
             // номер присваивается автоматически
-            Console.WriteLine($"Номер записи: {this.index}");
-            this.notes[index].Number = (uint)this.index;
+            Console.WriteLine($"Введите номер: ");
+            int Number = Convert.ToInt32(Console.ReadLine());
 
-            Console.WriteLine("Введите дату/время:");
-            this.notes[index].Date = Console.ReadLine();
+            Console.WriteLine("\nВведите дату/время:");
+            string Date = Console.ReadLine();
 
-            Console.WriteLine("Введите текст:");
-            this.notes[index].Text = Console.ReadLine();
+            Console.WriteLine("\nВведите текст:");
+            string Text = Console.ReadLine();
 
-            Console.WriteLine("Введите владельца:");
-            this.notes[index].Owner = Console.ReadLine();
+            Console.WriteLine("\nВведите владельца:");
+            string Owner = Console.ReadLine();
 
-            Console.WriteLine("Введите важность:");
-            this.notes[index].Importance = Console.ReadLine();
+            Console.WriteLine("\nВведите важность:");
+            string Importance = Console.ReadLine();
 
-            PrintDbToConsole();
+            notes.Add(new Note (Number,Date,Text,Owner,Importance));
         }
 
         /// <summary>
@@ -80,16 +78,13 @@ namespace notepad
         /// </summary>
         private void Load()
         {
-            using (StreamReader sr = new StreamReader(this.path))
+            using (StreamReader sr = new StreamReader(this.path, System.Text.Encoding.Default))
             {
-                titles = sr.ReadLine().Split(',');
-
-
                 while (!sr.EndOfStream)
                 {
                     string[] args = sr.ReadLine().Split(',');
 
-                    //Add(new Note(Convert.ToUInt32(args[0]), args[1], args[2], args[3], args[4]));
+                    notes.Add(new Note(Convert.ToInt32(args[0]), args[1], args[2], args[3], args[4]));
                 }
             }
         }
@@ -126,11 +121,11 @@ namespace notepad
         /// </summary>
         public void PrintDbToConsole()
         {
-            Console.WriteLine($"{this.titles[0],15} {this.titles[1],15} {this.titles[2],15} {this.titles[3],15} {this.titles[4],10}");
+            Console.WriteLine($"{this.titles[0],5} {this.titles[1],19} {this.titles[2],15} {this.titles[3],10} {this.titles[4],10}");
 
-            for (int i = 0; i < index; i++)
+            foreach (var item in notes)
             {
-                Console.WriteLine(this.notes[i].Print());
+                Console.WriteLine(item.Print());
             }
         }
 

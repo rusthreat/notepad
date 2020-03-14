@@ -1,7 +1,11 @@
-C:\Users\zrf\source\repos\6\Theme_07\Homework_07\notepad\notepad\notepad\obj\Debug\notepad.csprojAssemblyReference.cache
 C:\Users\zrf\source\repos\notepad\notepad\notepad\bin\Debug\notepad.exe.config
 C:\Users\zrf\source\repos\notepad\notepad\notepad\bin\Debug\notepad.exe
 C:\Users\zrf\source\repos\notepad\notepad\notepad\bin\Debug\notepad.pdb
 C:\Users\zrf\source\repos\notepad\notepad\notepad\obj\Debug\notepad.csprojAssemblyReference.cache
 C:\Users\zrf\source\repos\notepad\notepad\notepad\obj\Debug\notepad.exe
 C:\Users\zrf\source\repos\notepad\notepad\notepad\obj\Debug\notepad.pdb
+C:\Users\zrf\source\repos\6\Theme_07\Homework_07\notepad\notepad\notepad\bin\Debug\notepad.exe.config
+C:\Users\zrf\source\repos\6\Theme_07\Homework_07\notepad\notepad\notepad\bin\Debug\notepad.exe
+C:\Users\zrf\source\repos\6\Theme_07\Homework_07\notepad\notepad\notepad\bin\Debug\notepad.pdb
+C:\Users\zrf\source\repos\6\Theme_07\Homework_07\notepad\notepad\notepad\obj\Debug\notepad.exe
+C:\Users\zrf\source\repos\6\Theme_07\Homework_07\notepad\notepad\notepad\obj\Debug\notepad.pdb
