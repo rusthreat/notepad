@@ -54,23 +54,25 @@ namespace notepad
         {
             // Увеличиваем размер хранилища, если он недостаточен
             this.Resize(index >= this.notes.Length);
-            // номер присваивается автоматически
+            this.index++;
             
-            Console.WriteLine($"Номер записи: {index + 1}");
+            // номер присваивается автоматически
+            Console.WriteLine($"Номер записи: {this.index}");
+            this.notes[index].Number = (uint)this.index;
 
             Console.WriteLine("Введите дату/время:");
-            this.notes[index].Date.set = Console.ReadLine();
+            this.notes[index].Date = Console.ReadLine();
 
             Console.WriteLine("Введите текст:");
-            this.notes[index].text = Console.ReadLine();
+            this.notes[index].Text = Console.ReadLine();
 
             Console.WriteLine("Введите владельца:");
-            this.notes[index].owner = Console.ReadLine();
+            this.notes[index].Owner = Console.ReadLine();
 
             Console.WriteLine("Введите важность:");
-            this.importance = Console.ReadLine();
-            this.notes[index] = Note.AddNote((uint)index);
-            this.index++;
+            this.notes[index].Importance = Console.ReadLine();
+
+            PrintDbToConsole();
         }
 
         /// <summary>
@@ -124,7 +126,7 @@ namespace notepad
         /// </summary>
         public void PrintDbToConsole()
         {
-            Console.WriteLine($"{this.titles[0],15} {this.titles[1],15} {this.titles[4],15} {this.titles[2],15} {this.titles[3],10}");
+            Console.WriteLine($"{this.titles[0],15} {this.titles[1],15} {this.titles[2],15} {this.titles[3],15} {this.titles[4],10}");
 
             for (int i = 0; i < index; i++)
             {

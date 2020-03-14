@@ -42,7 +42,7 @@ namespace notepad
             while (true)
             {
                 // по умолчанию открывается файл - база данных
-                string path = @"db.csv";
+                string path = "C:/db.csv";
                 Journal jour = new Journal(path);
 
                 Console.Clear();
@@ -76,11 +76,15 @@ namespace notepad
                         }
                     //case 2: OpenJournal(); break;
                     //case 3: exit = true; break;
-                    //case 4: AddNote(); break;
+                    case 4:
+                        {
+                            jour.PrintDbToConsole(); 
+                            break;
+                        }
                     //case 5: OpenJournal(); break;
                     //case 6: exit = true; break;
                     //case 7: AddNote(); break;
-                    //case 8: OpenJournal(); break;
+                    case 8: break;
                     default:
                         {
                             continue;
