@@ -40,6 +40,7 @@ namespace notepad
              
             // по умолчанию открывается файл - база данных
             string path = @"db.csv";
+            
             Journal jour = new Journal(path);
 
             // Обработка начального меню
@@ -71,11 +72,19 @@ namespace notepad
                 {
                     case 1:
                         {
-                            jour.Add();
+                            jour.AddNote();
                             break;
                         }
-                    //case 2: OpenJournal(); break;
-                    //case 3: exit = true; break;
+                    case 2:
+                        {
+                            jour.DeleteNote();
+                            break;
+                        }
+                    case 3:
+                        {
+                            jour.EditNote();
+                            break;
+                        }
                     case 4:
                         {
                             jour.PrintDbToConsole(); 
