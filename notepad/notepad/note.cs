@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace notepad
 {
-    struct Note
+    class Note
     {
         #region Конструкторы
 
@@ -33,7 +33,7 @@ namespace notepad
 
         public string Print()
         {
-            return $"{this.number,5} {this.date,19} {this.text,15} {this.owner,10} {this.importance,10}";
+            return $"{this.number,7} {this.date,19} {this.text,15} {this.owner,10} {this.importance,10}";
         }
 
         public string NoteToString()

@@ -27,20 +27,11 @@ namespace notepad
             /// - Добавления данных в текущий ежедневник из выбранного файла
             /// - Импорт записей по выбранному диапазону дат
             /// - Упорядочивания записей ежедневника по выбранному полю
-
-            // 1. Структура одной записи
-            //      1) ДатаВремя
-            //      2) Номер
-            //      3) Текст
-            //      4) Владелец
-            //      5) Важность - Низкая, Обычная, Высокая
-            // 2. Структура обработки файлов
-            // 3. Структура обработки записей
-            // 4.
              
             // по умолчанию открывается файл - база данных
             string path = @"db.csv";
-            
+            string path_import = @"db2.csv";
+
             Journal jour = new Journal(path);
 
             // Обработка начального меню
@@ -55,7 +46,8 @@ namespace notepad
                 Console.WriteLine("5 - Сортировать журнал");
                 Console.WriteLine("6 - Импорт записей из файла");
                 Console.WriteLine("7 - Импорт записей из файла по диапозону дат");
-                Console.WriteLine("\n8 - выход");
+                Console.WriteLine("\n8 - Создание файла для импорта (служебный)");
+                Console.WriteLine("\n9 - выход");
 
                 //string item = Console.ReadLine();
 
@@ -95,9 +87,27 @@ namespace notepad
                     //        jour.PrintDbToConsole()    
                     //        break;
                     //    }
-                    //case 6: break;
-                    //case 7: AddNote(); break;
+                    case 6:
+                        {
+                            jour.Import(path_import);
+                            break;
+                        }
+                    case 7:
+                        {
+                            // явное указание диапозона дат для простоты отладки
+                            DateTime date1 = new DateTime(2020, 3, 1, 0, 0, 0);
+                            DateTime date2 = new DateTime(2020, 3, 15, 23, 59, 59);
+
+                            jour.Import(path_import, date1, date2);
+                            break;
+                        }
                     case 8:
+                        {
+                            jour.NewImportFile(path_import);
+                            break;
+                        }
+
+                    case 9:
                         {
                             exit = true;
                             break;

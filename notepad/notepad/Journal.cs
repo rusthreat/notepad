@@ -11,7 +11,7 @@ namespace notepad
     /// Структура по работе с данными
     /// </summary>
 
-    struct Journal
+    class Journal
     {
         //private Note[] notes; // Основной массив для хранения данных
 
@@ -34,11 +34,12 @@ namespace notepad
             this.titles = new string[5] { "1-Номер", "2-Дата", "3-Текст", "4-Владелец", "5-Важность" }; // инициализация массива заголовков   
             this.notes = new List<Note>(); // инициализация списка записей.    | изначально предпологаем, что данных нет
 
-            this.Load(); // Загрузка данных
+            this.Load(Path); // Загрузка данных
+            Count = notes.Count;
         }
 
         /// <summary>
-        /// Метод генерации новой записи
+        /// Метод генерации новой записи (служебный)
         /// </summary>
         public Note GenerateNote()
         {
@@ -47,16 +48,9 @@ namespace notepad
             string Importance;
             int Number;
 
-            // номер присваивается автоматически
-            if (notes.Count > 0)
-            {
-                Number = notes.Count + 1;
-            }
-            else
-            {
-                Number = 1;
-            }
-            
+            Count++;
+            Number = Count;
+
             // генерация даты
             DateTime today = DateTime.Now;
             DateTime Date = today.AddDays((double)rand.Next(-20, 21));
@@ -129,7 +123,7 @@ namespace notepad
             notes.Add(ConcreteNote);
 
             // добавление записи в файл
-            this.SaveNote(ConcreteNote);
+            SaveNote(ConcreteNote, Path);
             
             PrintTitles();
             Console.WriteLine(ConcreteNote.Print());
@@ -188,14 +182,7 @@ namespace notepad
                 // перезапись в файл db.csv
                 if (notes.Count > 0)
                 {
-                    using (StreamWriter sw = new StreamWriter(this.path))
-                    {
-                        foreach (var note in notes)
-                        {
-                            sw.WriteLine(note.NoteToString());
-                        }
-                    }
-                    Console.WriteLine("\nУдаление выполнено! Файл db.csv перезаписан");
+                    Save(Path);
                     exit = true;
                 }
                 else
@@ -226,127 +213,83 @@ namespace notepad
                     break;
                 }
 
-                bool exit = false;
-
                 Console.Clear();
                 PrintDbToConsole();
 
                 Console.WriteLine("\nВведите номер записи для редактирования: ");
                 if (!Int32.TryParse(Console.ReadLine(), out int item))
                 {
-                    Console.WriteLine("\nЗапись с таким номером не найдена!");
+                    Console.WriteLine("\nВведите корректный номер!");
                     continue;
                 }
 
-                // поиск записей с указанным номером
+                // поиск записи
+                var editItem = Notes.Find(x => x.Number == item);
+                
+                // выбор реквизита который требуется изменить
+                Console.WriteLine("\nВведите номер реквизита для редактирования (1-5): ");
 
-                // признак, что редактирование было
-                bool edit = false;
-
-                for (int i = 0; i <= notes.Count; i++)
+                if (!Int32.TryParse(Console.ReadLine(), out int item2))
                 {
-                    if (notes[i].Number == item)
-                    {
-                        while (true)
+                    Console.WriteLine("\nВведите корректный реквизит (1-5)!");
+                    continue;
+                }
+
+                if (item2 != 1 && item2 != 2 && item2 != 3 && item2 != 4 && item2 != 5)
+                {
+                    Console.WriteLine("\nВведите корректный реквизит (1-5)!");
+                    continue;
+                }
+
+                Console.WriteLine("\nВведите новое значение: ");
+                string newvalue = Console.ReadLine();
+
+                switch (item2)
+                {
+                    case 1:
                         {
-                            Console.Clear();
-                            PrintTitles();
-                            Console.WriteLine(notes[i].Print());
-
-                            // выбор реквизита который требуется изменить
-                            Console.WriteLine("\nВведите номер реквизита для редактирования (1-5): ");
-
-                            if (!Int32.TryParse(Console.ReadLine(), out int item2))
-                            {
-                                Console.WriteLine("\nНеверный реквизит!");
-                                continue;
-                            }
-
-                            string newvalue = Console.ReadLine();
-
-                            switch (item2)
-                            {
-                                case 1:
-                                    {
-                                        notes[i].Number = newvalue;
-                                        break;
-                                    }
-                                case 2:
-                                    {
-                                        notes[i].Date = newvalue;
-                                        break;
-                                    }
-                                case 3:
-                                    {
-                                        notes[i].Text = newvalue;
-                                        break;
-                                    }
-                                case 4:
-                                    {
-                                        notes[i].Owner = newvalue;
-                                        break;
-                                    }
-                                case 5:
-                                    {
-                                        notes[i].Importance = newvalue;
-                                        break;
-                                    }
-                            }
-
-
-
+                            editItem.Number = Convert.ToInt32(newvalue);
+                            break;
                         }
-
-                        edit = true;
-                        break;
-                    }
-                    i++;
-                }
-
-                if (!edit)
-                {
-                    Console.WriteLine("\nЗапись для редактирования не найдена!");
-                    break;
-                }
-
-                // перезапись в файл db.csv
-                if (notes.Count > 0)
-                {
-                    using (StreamWriter sw = new StreamWriter(this.path))
-                    {
-                        foreach (var note in notes)
+                    case 2:
                         {
-                            sw.WriteLine(note.NoteToString());
+                            editItem.Date = Convert.ToDateTime(newvalue);
+                            break;
                         }
-                    }
-                    Console.WriteLine("\nРедактирование выполнено! Файл db.csv перезаписан");
-                    exit = true;
-                }
-                else
-                {
-                    // записей нет, удаление файла
-                    File.Delete(this.path);
-                    Console.WriteLine("\nУдаление выполнено! Файл db.csv перезаписан");
-                    exit = true;
+                    case 3:
+                        {
+                            editItem.Text = newvalue;
+                            break;
+                        }
+                    case 4:
+                        {
+                            editItem.Owner = newvalue;
+                            break;
+                        }
+                    case 5:
+                        {
+                            editItem.Importance = newvalue;
+                            break;
+                        }
                 }
 
-                if (exit == true)
-                {
-                    break;
-                }
+                Console.WriteLine(editItem.Print());
+
+                // сохранение изменений
+                Save(Path);
+
+                break;
             }
         }
-
 
         /// <summary>
         /// Метод загрузки данных
         /// </summary>
-        private void Load()
+        private void Load(string path)
         {
-            // При открытии происходит попытка чтения файла db.csv
-            if (File.Exists(this.path))
+            if (File.Exists(path))
             {
-                using (StreamReader sr = new StreamReader(this.path))
+                using (StreamReader sr = new StreamReader(path))
                 {
                     while (!sr.EndOfStream)
                     {
@@ -357,47 +300,38 @@ namespace notepad
                 }
             }
         }
-
         /// <summary>
-        /// Метод сохранения данных
+        /// Метод загрузки данных c отбором по дате
         /// </summary>
-        /// <param name="Path">Путь к файлу сохранения</param>
-        public void Save(string Path)
+        private void Load(string path, DateTime date1, DateTime date2)
         {
-            string temp = String.Format("{0},{1},{2},{3},{4}",
-                                            this.titles[0],
-                                            this.titles[1],
-                                            this.titles[2],
-                                            this.titles[3],
-                                            this.titles[4]);
-
-            File.AppendAllText(Path, $"{temp}\n");
-
-            for (int i = 0; i < this.index; i++)
+            if (File.Exists(path))
             {
-                temp = String.Format("{0},{1},{2},{3},{4}",
-                                        this.notes[i].Number,
-                                        this.notes[i].Date,
-                                        this.notes[i].Text,
-                                        this.notes[i].Owner,
-                                        this.notes[i].Importance);
-                File.AppendAllText(Path, $"{temp}\n");
+                using (StreamReader sr = new StreamReader(path))
+                {
+                    while (!sr.EndOfStream)
+                    {
+                        string[] args = sr.ReadLine().Split(',');
+
+                        DateTime date = Convert.ToDateTime(args[1]);
+                        
+                        if (date >= date1 && date <= date2)
+                        {
+                            notes.Add(new Note(Convert.ToInt32(args[0]), Convert.ToDateTime(args[1]), args[2], args[3], args[4]));
+                        }
+                    }
+                }
             }
         }
-
-        /// <summary>
-        /// Метод преобразования записи в строку
-        /// </summary>
-        /// <param name="ConcreteNote">Конкретная запись, которую нужно добавить в файл</param>
 
         /// <summary>
         /// Метод добавления одной записи в файл
         /// </summary>
         /// <param name="ConcreteNote">Конкретная запись, которую нужно добавить в файл</param>
-        public void SaveNote(Note ConcreteNote)
+        public void SaveNote(Note ConcreteNote, string path)
         {
             string temp = ConcreteNote.NoteToString();
-            File.AppendAllText(this.path, $"{temp}\n");
+            File.AppendAllText(path, $"{temp}\n");
         }
 
         /// <summary>
@@ -405,7 +339,22 @@ namespace notepad
         /// </summary>
         public void PrintTitles()
         {
-            Console.WriteLine($"{this.titles[0],5} {this.titles[1],19} {this.titles[2],15} {this.titles[3],10} {this.titles[4],10}");
+            Console.WriteLine($"{this.titles[0],7} {this.titles[1],19} {this.titles[2],15} {this.titles[3],10} {this.titles[4],10}");
+        }
+
+        /// <summary>
+        /// перезапись в файл db.csv
+        /// </summary>
+        public void Save(string Path)
+        {
+            using (StreamWriter sw = new StreamWriter(this.path))
+            {
+                foreach (var note in Notes)
+                {
+                    sw.WriteLine(note.NoteToString());
+                }
+            }
+            Console.WriteLine("\nФайл db.csv перезаписан");
         }
 
         /// <summary>
@@ -421,8 +370,53 @@ namespace notepad
         }
 
         /// <summary>
+        /// Метод импорта данных из другого файла в db.csv
+        /// </summary>
+        public void Import(String path_import)
+        {
+            // Считывание строк из файла импорта и добавление их в список
+            Load(path_import);
+            
+            // сохранение списка с добавленными строками
+            Save(Path);
+
+            Console.WriteLine($"\nДанные импортированы из файла {path_import}");
+        }
+        /// <summary>
+        /// Метод импорта данных из другого файла в db.csv c условием
+        /// </summary>
+        public void Import(String path_import, DateTime date1, DateTime date2)
+        {
+            // Считывание строк из файла импорта и добавление их в список
+            Load(path_import, date1, date2);
+
+            // сохранение списка с добавленными строками
+            Save(Path);
+ 
+            Console.WriteLine($"\nДанные импортированы из файла {path_import} с отбором {date1} - {date2}");
+        }
+
+        /// <summary>
+        /// Генерация строк файла для импорта
+        /// </summary>
+        public void NewImportFile(String path_import)
+        {
+            int i;
+
+            for (i = 0; i <= 7; i++)
+            {
+                Note ConcreteNote = GenerateNote();
+                SaveNote(ConcreteNote, path_import);
+            }
+            Console.WriteLine($"\nФайл {path_import} сгенерирован. Число строк: {i}");
+        }
+
+
+        /// <summary>
         /// Количество записей в хранилище
         /// </summary>
-        public int Count { get { return this.index; } }
+        public int Count { get { return this.index; } set { this.index = value; } }
+        public string Path { get { return this.path; } }
+        public List<Note> Notes { get { return this.notes; }  }
     }
 }
