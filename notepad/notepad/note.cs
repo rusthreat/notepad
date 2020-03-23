@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace notepad
 {
-    class Note
+    class Note : IComparable<Note>
     {
         #region Конструкторы
 
@@ -45,6 +45,22 @@ namespace notepad
                                     this.Owner,
                                     this.Importance);
             return temp;
+        }
+
+        /// <summary>
+        /// интерфейс IComparer, для реелизации сортировок коллекции объектов
+        /// </summary>
+        public interface IComparer
+        {
+            int Compare(object a, object b);
+        }
+
+        /// <summary>
+        /// Сортировка по номеру
+        /// </summary>
+        public int CompareTo(Note T)
+        {
+            return this.Number.CompareTo(T.Number);
         }
 
         #endregion
@@ -107,4 +123,51 @@ namespace notepad
 
         #endregion
     }
+
+    #region Компараторы
+
+    /// <summary>
+    /// сортировка по дате
+    /// </summary>
+    class SortNotesByDate : IComparer<Note>
+    {
+        public int Compare(Note x, Note y)
+        {
+            return DateTime.Compare(x.Date, y.Date);
+        }
+    }
+
+    /// <summary>
+    /// сортировка по дате
+    /// </summary>
+    class SortNotesByText : IComparer<Note>
+    {
+        public int Compare(Note x, Note y)
+        {
+            return String.Compare(x.Text, y.Text);
+        }
+    }
+
+    /// <summary>
+    /// сортировка по дате
+    /// </summary>
+    class SortNotesByOwner : IComparer<Note>
+    {
+        public int Compare(Note x, Note y)
+        {
+            return String.Compare(x.Owner, y.Owner);
+        }
+    }
+
+    /// <summary>
+    /// сортировка по дате
+    /// </summary>
+    class SortNotesByImportance : IComparer<Note>
+    {
+        public int Compare(Note x, Note y)
+        {
+            return String.Compare(x.Importance, y.Importance);
+        }
+    }
+    #endregion
 }

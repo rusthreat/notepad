@@ -87,10 +87,10 @@ namespace notepad
             {
                 Importance = "Низкая";
             }
-            
+
             Note ConcreteNote = new Note(Number, Date, Text, Owner, Importance);
 
-            return ConcreteNote;        
+            return ConcreteNote;
         }
 
         /// <summary>
@@ -101,7 +101,7 @@ namespace notepad
         {
             // Генерация новой записи для удобства отладки
             Note ConcreteNote = GenerateNote();
-            
+
             //// номер присваивается автоматически
             //Console.WriteLine($"Введите номер: ");
             //int Number = Convert.ToInt32(Console.ReadLine());
@@ -124,7 +124,7 @@ namespace notepad
 
             // добавление записи в файл
             SaveNote(ConcreteNote, Path);
-            
+
             PrintTitles();
             Console.WriteLine(ConcreteNote.Print());
             Console.WriteLine("\nЗапись добавлена! Файл db.csv перезаписан");
@@ -156,7 +156,7 @@ namespace notepad
                 }
 
                 // поиск записей с указанным номером
-                
+
                 // индекс для удаления по индексу
                 int i = 0;
                 // признак, что удаление было
@@ -225,7 +225,7 @@ namespace notepad
 
                 // поиск записи
                 var editItem = Notes.Find(x => x.Number == item);
-                
+
                 // выбор реквизита который требуется изменить
                 Console.WriteLine("\nВведите номер реквизита для редактирования (1-5): ");
 
@@ -283,6 +283,75 @@ namespace notepad
         }
 
         /// <summary>
+        /// Метод сортировки журнала
+        /// </summary>
+        public void Sort()
+        {
+            while (true)
+            {
+                if (notes.Count == 0)
+                {
+                    Console.WriteLine("\nВ журнале нет записей!");
+                    break;
+                }
+
+                Console.Clear();
+                PrintDbToConsole();
+
+                // выбор реквизита который требуется изменить
+                Console.WriteLine("\nВведите номер реквизита для сортировки (1-5): ");
+
+                if (!Int32.TryParse(Console.ReadLine(), out int item2))
+                {
+                    Console.WriteLine("\nВведите корректный реквизит (1-5)!");
+                    continue;
+                }
+
+                if (item2 != 1 && item2 != 2 && item2 != 3 && item2 != 4 && item2 != 5)
+                {
+                    Console.WriteLine("\nВведите корректный реквизит (1-5)!");
+                    continue;
+                }
+
+                // сортировка
+                switch (item2)
+                {
+                    case 1:
+                        {
+                            Notes.Sort();
+                            break;
+                        }
+                    case 2:
+                        {
+                            Notes.Sort(new SortNotesByDate());
+                            break;
+                        }
+                    case 3:
+                        {
+                            Notes.Sort(new SortNotesByText());
+                            break;
+                        }
+                    case 4:
+                        {
+                            Notes.Sort(new SortNotesByOwner());
+                            break;
+                        }
+                    case 5:
+                        {
+                            Notes.Sort(new SortNotesByImportance());
+                            break;
+                        }
+                }
+
+                Console.Clear();
+                Console.WriteLine("Сортировка завершена!\n");
+                PrintDbToConsole();
+
+                break;
+            }
+        }
+
+        /// <summary>
         /// Метод загрузки данных
         /// </summary>
         private void Load(string path)
@@ -314,7 +383,7 @@ namespace notepad
                         string[] args = sr.ReadLine().Split(',');
 
                         DateTime date = Convert.ToDateTime(args[1]);
-                        
+
                         if (date >= date1 && date <= date2)
                         {
                             notes.Add(new Note(Convert.ToInt32(args[0]), Convert.ToDateTime(args[1]), args[2], args[3], args[4]));
@@ -376,7 +445,7 @@ namespace notepad
         {
             // Считывание строк из файла импорта и добавление их в список
             Load(path_import);
-            
+
             // сохранение списка с добавленными строками
             Save(Path);
 
@@ -392,7 +461,7 @@ namespace notepad
 
             // сохранение списка с добавленными строками
             Save(Path);
- 
+
             Console.WriteLine($"\nДанные импортированы из файла {path_import} с отбором {date1} - {date2}");
         }
 
@@ -417,6 +486,7 @@ namespace notepad
         /// </summary>
         public int Count { get { return this.index; } set { this.index = value; } }
         public string Path { get { return this.path; } }
-        public List<Note> Notes { get { return this.notes; }  }
+        public List<Note> Notes { get { return this.notes; } }
+
     }
 }

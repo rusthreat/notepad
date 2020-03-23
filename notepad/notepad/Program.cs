@@ -82,11 +82,11 @@ namespace notepad
                             jour.PrintDbToConsole(); 
                             break;
                         }
-                    //case 5: OpenJournal();
-                    //    {
-                    //        jour.PrintDbToConsole()    
-                    //        break;
-                    //    }
+                    case 5:
+                        {
+                            jour.Sort();
+                            break;
+                        }
                     case 6:
                         {
                             jour.Import(path_import);
